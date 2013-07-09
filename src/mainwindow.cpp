@@ -8,44 +8,27 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     mavlink = new MAVLinkProtocol();
+    mavlink->setSystemId(127);
 
-    //SerialLink* link = new SerialLink();
-    // TODO This should be only done in the dialog itself
+    connect(ui->cxHeartBeat, SIGNAL(toggled(bool)), mavlink, SLOT(enableHeartbeats(bool)));
 
-//    LinkManager::instance()->add(link);
-//    LinkManager::instance()->addProtocol(link, mavlink);
     QList<LinkInterface*> links = LinkManager::instance()->getLinks();
     foreach(LinkInterface* link, links)
     {
         this->addLink(link);
     }
 
-//    dwDatos= new QDockWidget("DATOS");
-//    dwDatos->setMinimumWidth(350);
-//    dwDatos->setMaximumWidth(350);
-//    wgDatos = new QWidget();
-//    glDatos = new QGridLayout(wgDatos);
-//    glDatos->setContentsMargins(5,5,5,5);
-//    glDatos->addWidget(new QGCLogPlayer(mavlink));
+    timer = new QTimer(this);
+    timer->setInterval(250);
+    connect(timer, SIGNAL(timeout()), this, SLOT(refreshTimeOut()));
+    timer->start();
 
-//    QGCFlight* flight = new QGCFlight();
-//    QGCGoogleEarthView * google = new QGCGoogleEarthView();
+    //connect(UASManager::instance(), SIGNAL(UASCreated(SlugsMAV*)), this, SLOT(UASCreated(SlugsMAV*)));
+    connect(UASManager::instance(), SIGNAL(activeUASSet(SlugsMAV*)), this, SLOT(setActiveUAS(SlugsMAV*)));
 
-//    connect(flight, SIGNAL(emitParametrosPosicion(double,double,double)), google, SLOT(setParametrosPosicion(double,double,double)));
-//    connect(flight, SIGNAL(emitParametrosVuelo(double,double,double)), google, SLOT(setParametrosVuelo(double,double,double)));
-//    connect(this, SIGNAL(emitKeyPress(QKeyEvent*)), google, SLOT(keyPressChange(QKeyEvent*)));
-//    connect(google, SIGNAL(emitFocus()), this, SLOT(miSetFocus()));
-
-//    glDatos->addWidget(flight);
-
-//    hudWidget = new HUD(400, 400, wgDatos);
-//    hudWidget->show();
-//    glDatos->addWidget(hudWidget);
-//    dwDatos->setWidget(wgDatos);
-
-//    addDockWidget(Qt::RightDockWidgetArea, dwDatos);
-
-//    setCentralWidget(google);
+    connect(ui->dlDireccion, SIGNAL(valueChanged(int)), ui->lbDireccion, SLOT(setNum(int)));
+    connect(ui->dlMovimiento, SIGNAL(valueChanged(int)), ui->lbMovimiento, SLOT(setNum(int)));
+    connect(ui->dlVelocidad, SIGNAL(valueChanged(int)), ui->lbVelocidad, SLOT(setNum(int)));
 }
 
 MainWindow::~MainWindow()
@@ -72,4 +55,56 @@ void MainWindow::addLink(LinkInterface *link)
     // Register (does nothing if already registered)
     LinkManager::instance()->add(link);
     LinkManager::instance()->addProtocol(link, mavlink);
+}
+
+void MainWindow::UASCreated(SlugsMAV *mav)
+{}
+
+void MainWindow::setActiveUAS(SlugsMAV *mav)
+{
+    if (mav != NULL)
+    {
+        //this->activeUAS = uas;
+
+        connect(mav, SIGNAL(emitHeartBeat()), this, SLOT(setAlertHeartbeat()));
+        connect(mav, SIGNAL(emitHeartBeatTimeOut()), this, SLOT(setAlertHeartbeatTimeout()));
+    }
+}
+
+
+void MainWindow::setAlertHeartbeat()
+{
+    this->heartbeat = 1;
+    timeOut = false;
+}
+
+void MainWindow::setAlertHeartbeatTimeout()
+{
+    this->heartbeat = -1;
+    timeOut = true;
+
+    if(timeOutGPS <= 5)
+    {
+        if(timeOutGPS == 5)
+        {
+
+        }
+
+        timeOutGPS++;
+    }
+}
+
+void MainWindow::refreshTimeOut()
+{
+//    iAlertHeartbeat->setValue(heartbeat);
+//    alertHeartbeat = iAlertHeartbeat->setStyleAlert();
+
+    if(heartbeat == -1)
+    {
+        ui->wgHeartBeat->setStyleSheet("background-color: #FF3333;");
+    }
+    else
+    {
+        ui->wgHeartBeat->setStyleSheet("background-color: #66FF33;");
+    }
 }

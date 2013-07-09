@@ -33,8 +33,8 @@ This file is part of the QGROUNDCONTROL project
 #include <QMessageBox>
 #include <QTimer>
 #include <QSettings>
-#include "UAS.h"
-#include "UASInterface.h"
+#include "SlugsMAV.h"
+//#include "UASInterface.h"
 #include "UASManager.h"
 #include "QGC.h"
 
@@ -67,28 +67,28 @@ void UASManager::loadSettings()
     QSettings settings;
     settings.sync();
     settings.beginGroup("QGC_UASMANAGER");
-    setHomePosition(settings.value("HOMELAT", homeLat).toDouble(),
-                    settings.value("HOMELON", homeLon).toDouble(),
-                    settings.value("HOMEALT", homeAlt).toDouble());
+//    setHomePosition(settings.value("HOMELAT", homeLat).toDouble(),
+//                    settings.value("HOMELON", homeLon).toDouble(),
+//                    settings.value("HOMEALT", homeAlt).toDouble());
     settings.endGroup();
 }
 
 void UASManager::setHomePosition(double lat, double lon, double alt)
 {
     // Checking for NaN and infitiny
-    if (lat == lat && lon == lon && alt == alt && !std::isinf(lat) && !std::isinf(lon) && !std::isinf(alt))
-    {
-        bool changed = false;
-        if (homeLat != lat) changed = true;
-        if (homeLon != lon) changed = true;
-        if (homeAlt != alt) changed = true;
+//    if (lat == lat && lon == lon && alt == alt && !std::isinf(lat) && !std::isinf(lon) && !std::isinf(alt))
+//    {
+//        bool changed = false;
+//        if (homeLat != lat) changed = true;
+//        if (homeLon != lon) changed = true;
+//        if (homeAlt != alt) changed = true;
 
-        homeLat = lat;
-        homeLon = lon;
-        homeAlt = alt;
+//        homeLat = lat;
+//        homeLon = lon;
+//        homeAlt = alt;
 
-        if (changed) emit homePositionChanged(homeLat, homeLon, homeAlt);
-    }
+//        if (changed) emit homePositionChanged(homeLat, homeLon, homeAlt);
+//    }
 }
 
 /**
@@ -110,7 +110,7 @@ UASManager::~UASManager()
 {
     storeSettings();
 
-    foreach (UASInterface* mav, systems)
+    foreach (SlugsMAV* mav, systems)
     {
         delete mav;
     }
@@ -126,7 +126,7 @@ void UASManager::run()
     exec();
 }
 
-void UASManager::addUAS(UASInterface* uas)
+void UASManager::addUAS(SlugsMAV* uas)
 {
     // WARNING: The active uas is set here
     // and then announced below. This is necessary
@@ -145,7 +145,7 @@ void UASManager::addUAS(UASInterface* uas)
     {
         systems.append(uas);
         connect(uas, SIGNAL(destroyed(QObject*)), this, SLOT(removeUAS(QObject*)));
-        connect(this, SIGNAL(homePositionChanged(double,double,double)), uas, SLOT(setHomePosition(double,double,double)));
+        //connect(this, SIGNAL(homePositionChanged(double,double,double)), uas, SLOT(setHomePosition(double,double,double)));
         emit UASCreated(uas);
     }
 
@@ -158,7 +158,7 @@ void UASManager::addUAS(UASInterface* uas)
 
 void UASManager::removeUAS(QObject* uas)
 {
-    UASInterface* mav = qobject_cast<UASInterface*>(uas);
+    SlugsMAV* mav = qobject_cast<SlugsMAV*>(uas);
 
     if (mav)
     {
@@ -193,21 +193,21 @@ void UASManager::removeUAS(QObject* uas)
     }
 }
 
-QList<UASInterface*> UASManager::getUASList()
+QList<SlugsMAV*> UASManager::getUASList()
 {
     return systems;
 }
 
-UASInterface* UASManager::getActiveUAS()
+SlugsMAV* UASManager::getActiveUAS()
 {
     return activeUAS; ///< Return zero pointer if no UAS has been loaded
 }
 
-UASInterface* UASManager::getUASForId(int id)
+SlugsMAV* UASManager::getUASForId(int id)
 {
-    UASInterface* system = NULL;
+    SlugsMAV* system = NULL;
 
-    foreach(UASInterface* sys, systems)
+    foreach(SlugsMAV* sys, systems)
     {
         if (sys->getUASID() == id)
         {
@@ -218,24 +218,24 @@ UASInterface* UASManager::getUASForId(int id)
     return system;
 }
 
-void UASManager::setActiveUAS(UASInterface* uas)
+void UASManager::setActiveUAS(SlugsMAV* uas)
 {
     if (uas != NULL)
     {
-        activeUASMutex.lock();
-        if (activeUAS != NULL)
-        {
-            emit activeUASStatusChanged(activeUAS, false);
-            emit activeUASStatusChanged(activeUAS->getUASID(), false);
-        }
+//        activeUASMutex.lock();
+//        if (activeUAS != NULL)
+//        {
+//            emit activeUASStatusChanged(activeUAS, false);
+//            emit activeUASStatusChanged(activeUAS->getUASID(), false);
+//        }
         activeUAS = uas;
-        activeUASMutex.unlock();
+//        activeUASMutex.unlock();
 
         activeUAS->setSelected();
         emit activeUASSet(uas);
-        emit activeUASSet(uas->getUASID());
-        emit activeUASSetListIndex(systems.indexOf(uas));
-        emit activeUASStatusChanged(uas, true);
-        emit activeUASStatusChanged(uas->getUASID(), true);
+//        emit activeUASSet(uas->getUASID());
+//        emit activeUASSetListIndex(systems.indexOf(uas));
+//        emit activeUASStatusChanged(uas, true);
+//        emit activeUASStatusChanged(uas->getUASID(), true);
     }
 }

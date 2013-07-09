@@ -10,7 +10,8 @@
 #include <QApplication>
 #include <QDebug>
 
-#include "UAS.h"
+//#include "UASManager.h"
+#include "MAVLinkProtocol.h"
 #include "mavlink.h"
 #include "LinkManager.h"
 //#include "QGCConfiguration.h"
@@ -34,6 +35,7 @@ public:
      **/
     SlugsMAV(MAVLinkProtocol* mavlink, int id = 0);
     ~SlugsMAV();
+    void setSelected();
 
     /**
      * @brief Enumeration SLUGS data information
@@ -246,9 +248,12 @@ public slots:
     void setTypeUAV(UAVType type);
     float getUC(){return uCommand;}
     void setSystemType(int systemType);
+    void updateState();
+    int getUASID();
 
 signals:
-
+    void emitHeartBeat();
+    void emitHeartBeatTimeOut();
 
 protected:
 
@@ -265,6 +270,9 @@ protected:
     static const double mc = 0.0181553831;
     static const double bc = 90.4051033146;
 
+    static const unsigned int timeoutIntervalHeartbeat = 2000 * 1000; ///< Heartbeat timeout is 1.5 seconds
+    int type;
+
 private:
     int uasId;    
     float hCommand, uCommand, rCommand;
@@ -272,6 +280,7 @@ private:
     bool outPTZ;
     UAVType typeUAV;
     mavlink_heartbeat_t mlHeartBeat;
+    quint64 lastHeartbeat;      ///< Time of the last heartbeat message
 };
 
 #endif // SLUGSMAV_H

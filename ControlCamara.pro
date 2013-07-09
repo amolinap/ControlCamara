@@ -43,7 +43,7 @@ SOURCES += src/main.cpp \
         src/ect/qextserialport.cpp \
         src/ect/qextserialbase.cpp \
         src/ect/posix_qextserialport.cpp \
-        src/ect/HUD.cc \
+        #src/ect/HUD.cc \
         src/ect/UDPLink.cc \
         src/QGCFlight.cpp
 
@@ -70,7 +70,7 @@ HEADERS  += src/mainwindow.h  \
         src/ect/qextserialbase.h \
         src/ect/SerialLinkInterface.h \
         src/ect/posix_qextserialport.h \
-        src/ect/HUD.h \
+        #src/ect/HUD.h \
         src/ect/UDPLink.h \
         src/QGCFlight.h
 

@@ -34,7 +34,7 @@ This file is part of the QGROUNDCONTROL project
 #include <QThread>
 #include <QList>
 #include <QMutex>
-#include <UASInterface.h>
+#include "SlugsMAV.h"
 
 /**
  * @brief Central manager for all connected aerial vehicles
@@ -56,7 +56,7 @@ public:
      *
      * @return NULL pointer if no UAS exists, active UAS else
      **/
-    UASInterface* getActiveUAS();    
+    SlugsMAV* getActiveUAS();
     /**
      * @brief Get the UAS with this id
      *
@@ -66,8 +66,8 @@ public:
      * @param id unique system / aircraft id
      * @return UAS with the given ID, NULL pointer else
      **/
-    UASInterface* getUASForId(int id);
-    QList<UASInterface*> getUASList();
+    SlugsMAV* getUASForId(int id);
+    QList<SlugsMAV*> getUASList();
     /** @brief Get home position latitude */
     double getHomeLatitude() const { return homeLat; }
     /** @brief Get home position longitude */
@@ -83,7 +83,7 @@ public slots:
      * This command will only be executed if this UAS does not yet exist.
      * @param UAS unmanned air system to add
      **/
-    void addUAS(UASInterface* UAS);
+    void addUAS(SlugsMAV* UAS);
 
     /** @brief Remove a system from the list */
     void removeUAS(QObject* uas);
@@ -92,7 +92,7 @@ public slots:
       *
       * @param UAS Unmanned Air System to set
       **/
-    void setActiveUAS(UASInterface* UAS);
+    void setActiveUAS(SlugsMAV* UAS);
     /** @brief Set the current home position */
     void setHomePosition(double lat, double lon, double alt);
     /** @brief Load settings */
@@ -102,23 +102,23 @@ public slots:
 
 protected:
     UASManager();
-    QList<UASInterface*> systems;
-    UASInterface* activeUAS;
+    QList<SlugsMAV*> systems;
+    SlugsMAV* activeUAS;
     QMutex activeUASMutex;
     double homeLat;
     double homeLon;
     double homeAlt;
 
 signals:
-    void UASCreated(UASInterface* UAS);
+    void UASCreated(SlugsMAV* UAS);
     /** @brief The UAS currently under main operator control changed */
-    void activeUASSet(UASInterface* UAS);
+    void activeUASSet(SlugsMAV* UAS);
     /** @brief The UAS currently under main operator control changed */
     void activeUASSet(int systemId);
     /** @brief The UAS currently under main operator control changed */
     void activeUASSetListIndex(int listIndex);
     /** @brief The UAS currently under main operator control changed */
-    void activeUASStatusChanged(UASInterface* UAS, bool active);
+    //void activeUASStatusChanged(UASInterface* UAS, bool active);
     /** @brief The UAS currently under main operator control changed */
     void activeUASStatusChanged(int systemId, bool active);
     /** @brief Current home position changed */

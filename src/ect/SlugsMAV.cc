@@ -1,4 +1,6 @@
 #include "SlugsMAV.h"
+#include "MAVLinkProtocol.h"
+#include "UASManager.h"
 
 SlugsMAV::SlugsMAV(MAVLinkProtocol* mavlink, int id)// :                UAS(mavlink, id)
 {
@@ -32,8 +34,10 @@ void SlugsMAV::receiveMessage(LinkInterface* link, mavlink_message_t message)
         switch (message.msgid)
         {
         case MAVLINK_MSG_ID_HEARTBEAT://MESSAGE ISSUED PERIODICALLY
+            lastHeartbeat = QGC::groundTimeUsecs();
+            emit emitHeartBeat();
             {
-                mavlink_msg_heartbeat_decode(&message,&mlHeartBeat);
+                mavlink_msg_heartbeat_decode(&message,&mlHeartBeat);                
 
                 qDebug()<<mlHeartBeat.autopilot<<mlHeartBeat.mavlink_version<<mlHeartBeat.type;
             }
@@ -52,7 +56,7 @@ void SlugsMAV::setTypeUAV(UAVType type)
 
 void SlugsMAV::setSystemType(int systemType)
 {
-//    type = systemType;
+    type = systemType;
 //    // If the airframe is still generic, change it to a close default type
 //    if (airframe == 0)
 //    {
@@ -68,4 +72,29 @@ void SlugsMAV::setSystemType(int systemType)
 //    }
 
 //    emit systemSpecsChanged(uasId);
+}
+
+
+void SlugsMAV::updateState()
+{
+    // Check if heartbeat timed out
+    quint64 heartbeatInterval = QGC::groundTimeUsecs() - lastHeartbeat;
+    if (heartbeatInterval > timeoutIntervalHeartbeat)
+    {
+        //emit heartbeatTimeout(heartbeatInterval);
+        emit emitHeartBeatTimeOut();
+    }
+}
+
+int SlugsMAV::getUASID()
+{
+    return type;
+}
+
+void SlugsMAV::setSelected()
+{
+    if (UASManager::instance()->getActiveUAS() != this)
+    {
+        UASManager::instance()->setActiveUAS(this);
+    }
 }

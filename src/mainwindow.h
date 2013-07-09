@@ -5,6 +5,7 @@
 #include <QGridLayout>
 #include <QDockWidget>
 #include <QKeyEvent>
+#include <QTimer>
 
 #include "HUD.h"
 //#include "QGCLogPlayer.h"
@@ -28,6 +29,11 @@ public:
 public slots:
     void miSetFocus();
     void addLink(LinkInterface *link);
+    void UASCreated(SlugsMAV* mav);
+    void setActiveUAS(SlugsMAV* mav);
+    void setAlertHeartbeat();
+    void setAlertHeartbeatTimeout();
+    void refreshTimeOut();
 
 private:
     Ui::MainWindow *ui;
@@ -37,6 +43,10 @@ private:
         QWidget* wgDatos;
         QGridLayout* glDatos;
         QDockWidget* dwDatos;
+        double heartbeat;
+        bool timeOut;
+        int timeOutGPS;
+        QTimer *timer;
 
 signals:
         void emitKeyPress(QKeyEvent *event);
