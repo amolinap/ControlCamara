@@ -7,11 +7,12 @@
 #include <QKeyEvent>
 #include <QTimer>
 
-#include "HUD.h"
+//#include "HUD.h"
 //#include "QGCLogPlayer.h"
-#include "QGCFlight.h"
+//#include "QGCFlight.h"
 //#include "GoogleEarth/map3D/QGCGoogleEarthView.h"
-#include "SerialLink.h"
+//#include "SerialLink.h"
+#include "UASManager.h"
 
 namespace Ui {
     class MainWindow;
@@ -38,18 +39,18 @@ public slots:
 private:
     Ui::MainWindow *ui;
     MAVLinkProtocol *mavlink;
-        QPointer<HUD> hudWidget;
-        //QPointer<QGCLogPlayer> playerWidget;
-        QWidget* wgDatos;
-        QGridLayout* glDatos;
-        QDockWidget* dwDatos;
-        double heartbeat;
-        bool timeOut;
-        int timeOutGPS;
-        QTimer *timer;
+    //QPointer<HUD> hudWidget;
+    //QPointer<QGCLogPlayer> playerWidget;
+    QWidget* wgDatos;
+    QGridLayout* glDatos;
+    QDockWidget* dwDatos;
+    double heartbeat;
+    bool timeOut;
+    int timeOutGPS;
+    QTimer *timer;
 
 signals:
-        void emitKeyPress(QKeyEvent *event);
+    void emitKeyPress(QKeyEvent *event);
 };
 
 #endif // MAINWINDOW_H

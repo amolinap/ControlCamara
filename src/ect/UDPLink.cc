@@ -74,10 +74,10 @@ UDPLink::~UDPLink()
  **/
 void UDPLink::run()
 {
-//    forever
-//    {
-//        QGC::SLEEP::msleep(5000);
-//    }
+    //    forever
+    //    {
+    //        QGC::SLEEP::msleep(5000);
+    //    }
     exec();
 }
 
@@ -168,25 +168,25 @@ void UDPLink::readBytes()
         file->write(b);
     }
 
-//    for (int i=0; i<s; i++)
-//    {
-//        unsigned int v=data[i];
+    //    for (int i=0; i<s; i++)
+    //    {
+    //        unsigned int v=data[i];
 
-//        QString binary = QString::number(v, 2);
-//        //file->write(binary.toLocal8Bit());
-//        qDebug("%02x ", v);
-//    }
+    //        QString binary = QString::number(v, 2);
+    //        //file->write(binary.toLocal8Bit());
+    //        qDebug("%02x ", v);
+    //    }
 
 
-//    // Echo data for debugging purposes
-//    std::cerr << __FILE__ << __LINE__ << "Received datagram:" << std::endl;
-//    int i;
-//    for (i=0; i<s; i++)
-//    {
-//        unsigned int v=data[i];
-//        fprintf(stderr,"%02x ", v);
-//    }
-//    std::cerr << std::endl;
+    //    // Echo data for debugging purposes
+    //    std::cerr << __FILE__ << __LINE__ << "Received datagram:" << std::endl;
+    //    int i;
+    //    for (i=0; i<s; i++)
+    //    {
+    //        unsigned int v=data[i];
+    //        fprintf(stderr,"%02x ", v);
+    //    }
+    //    std::cerr << std::endl;
 
 
     // Add host to broadcast list if not yet present
@@ -241,16 +241,16 @@ bool UDPLink::connect()
     socket = new QUdpSocket(this);
 
     //Check if we are using a multicast-address
-//    bool multicast = false;
-//    if (host.isInSubnet(QHostAddress("224.0.0.0"),4))
-//    {
-//        multicast = true;
-//        connectState = socket->bind(port, QUdpSocket::ShareAddress);
-//    }
-//    else
-//    {
-        connectState = socket->bind(host, port);
-//    }
+    //    bool multicast = false;
+    //    if (host.isInSubnet(QHostAddress("224.0.0.0"),4))
+    //    {
+    //        multicast = true;
+    //        connectState = socket->bind(port, QUdpSocket::ShareAddress);
+    //    }
+    //    else
+    //    {
+    connectState = socket->bind(host, port);
+    //    }
 
     //Provides Multicast functionality to UdpSocket
     /* not working yet
@@ -370,17 +370,17 @@ int UDPLink::getLinkQuality() {
 
 void UDPLink::saveDataToFile(const QString &path)//saveBinaryData
 {
-//    QString tempFile(QFileInfo(path).baseName());
-//    QString tempPath(QFileInfo(path).dir().path()+"/");
+    //    QString tempFile(QFileInfo(path).baseName());
+    //    QString tempPath(QFileInfo(path).dir().path()+"/");
 
-//    if(saveFile != tempPath + "/" + tempFile + ".bin")
-//    {
-//        filePath = tempPath;
-//        fileData = tempFile;
-//        createFile();
-//    }
+    //    if(saveFile != tempPath + "/" + tempFile + ".bin")
+    //    {
+    //        filePath = tempPath;
+    //        fileData = tempFile;
+    //        createFile();
+    //    }
 
-//    this->saveData = save;
+    //    this->saveData = save;
     qDebug()<<"Archivo"<<path;
     QString tempFile(QFileInfo(path).baseName());
     QString tempPath(QFileInfo(path).dir().path());
@@ -412,14 +412,7 @@ void UDPLink::saveDataToFile(const QString &path)//saveBinaryData
 }
 
 void UDPLink::createFile()
-{
-//    saveFile = filePath+"/"+fileData+".bin";
-
-//    if(!QFileInfo(saveFile).exists())
-//    {
-//        file = new QFile(saveFile);
-//        file->open(QIODevice::WriteOnly | QIODevice::Append);
-//    }
+{    
     saveFile = filePath+"/"+fileData+".bin";
 
     if(QFileInfo(saveFile).exists())

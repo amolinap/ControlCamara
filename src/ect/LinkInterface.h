@@ -246,13 +246,13 @@ protected:
 
 protected slots:
 
-/**
+    /**
  * @brief Read a number of bytes from the interface.
  *
  * @param bytes The pointer to write the bytes to
  * @param maxLength The maximum length which can be written
  **/
-virtual void readBytes() = 0;
+    virtual void readBytes() = 0;
 
 };
 

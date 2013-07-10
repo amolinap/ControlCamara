@@ -67,29 +67,9 @@ void UASManager::loadSettings()
     QSettings settings;
     settings.sync();
     settings.beginGroup("QGC_UASMANAGER");
-//    setHomePosition(settings.value("HOMELAT", homeLat).toDouble(),
-//                    settings.value("HOMELON", homeLon).toDouble(),
-//                    settings.value("HOMEALT", homeAlt).toDouble());
     settings.endGroup();
 }
 
-void UASManager::setHomePosition(double lat, double lon, double alt)
-{
-    // Checking for NaN and infitiny
-//    if (lat == lat && lon == lon && alt == alt && !std::isinf(lat) && !std::isinf(lon) && !std::isinf(alt))
-//    {
-//        bool changed = false;
-//        if (homeLat != lat) changed = true;
-//        if (homeLon != lon) changed = true;
-//        if (homeAlt != alt) changed = true;
-
-//        homeLat = lat;
-//        homeLon = lon;
-//        homeAlt = alt;
-
-//        if (changed) emit homePositionChanged(homeLat, homeLon, homeAlt);
-//    }
-}
 
 /**
  * @brief Private singleton constructor

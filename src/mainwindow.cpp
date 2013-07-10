@@ -2,8 +2,8 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+        QMainWindow(parent),
+        ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -58,7 +58,9 @@ void MainWindow::addLink(LinkInterface *link)
 }
 
 void MainWindow::UASCreated(SlugsMAV *mav)
-{}
+{
+    Q_UNUSED(mav);
+}
 
 void MainWindow::setActiveUAS(SlugsMAV *mav)
 {
@@ -87,7 +89,7 @@ void MainWindow::setAlertHeartbeatTimeout()
     {
         if(timeOutGPS == 5)
         {
-
+            //codigo para realizar una actividad si se pierde el pulso!!!
         }
 
         timeOutGPS++;
@@ -96,9 +98,6 @@ void MainWindow::setAlertHeartbeatTimeout()
 
 void MainWindow::refreshTimeOut()
 {
-//    iAlertHeartbeat->setValue(heartbeat);
-//    alertHeartbeat = iAlertHeartbeat->setStyleAlert();
-
     if(heartbeat == -1)
     {
         ui->wgHeartBeat->setStyleSheet("background-color: #FF3333;");

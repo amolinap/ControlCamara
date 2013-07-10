@@ -215,8 +215,21 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="0" colspan="5">
+    <item row="2" column="0" colspan="5">
      <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    </item>
+    <item row="1" column="2">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>

@@ -93,8 +93,6 @@ public slots:
       * @param UAS Unmanned Air System to set
       **/
     void setActiveUAS(SlugsMAV* UAS);
-    /** @brief Set the current home position */
-    void setHomePosition(double lat, double lon, double alt);
     /** @brief Load settings */
     void loadSettings();
     /** @brief Store settings */

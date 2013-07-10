@@ -16,6 +16,15 @@ int main(int argc, char *argv[])
 
     }
 
+    QFile* styleSheet = new QFile(":/images/style-mission.css");
+
+    if (styleSheet->open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QString style = QString(styleSheet->readAll());
+        style.replace("ICONDIR", QCoreApplication::applicationDirPath()+ "/images/");
+        qApp->setStyleSheet(style);
+    }
+
     MainWindow w;
     w.show();
 

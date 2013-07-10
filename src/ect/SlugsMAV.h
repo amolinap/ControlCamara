@@ -193,7 +193,7 @@ public:
         PTZ_TILT = 127,
 
         RC_CHANNELS_RAW_5 = 128
-    };
+                        };
 
     /**
      * @brief Enumeration SLUGS data information
@@ -202,7 +202,7 @@ public:
     {
         UAV = 0,
         SMALL_UAV = 1
-    };
+                };
 
     /**
      * @brief This function return the airspeed.

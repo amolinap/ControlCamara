@@ -19,10 +19,10 @@
 
 //#include "MG.h"
 #include "MAVLinkProtocol.h"
-#include "UASInterface.h"
+//#include "UASInterface.h"
 #include "UASManager.h"
-#include "UASInterface.h"
-#include "UAS.h"
+//#include "UASInterface.h"
+//#include "UAS.h"
 #include "SlugsMAV.h"
 //#include "PxQuadMAV.h"
 //#include "ArduPilotMegaMAV.h"

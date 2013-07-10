@@ -4,6 +4,8 @@
 
 SlugsMAV::SlugsMAV(MAVLinkProtocol* mavlink, int id)// :                UAS(mavlink, id)
 {
+    Q_UNUSED(mavlink);
+
     hCommand = 0;
     uCommand = 0;
     u_m = 0;
@@ -25,9 +27,7 @@ SlugsMAV::~SlugsMAV()
 
 void SlugsMAV::receiveMessage(LinkInterface* link, mavlink_message_t message)
 {
-    //UAS::receiveMessage(link, message);// Let UAS handle the default message set
-
-    int a = 5;
+    Q_UNUSED(link);
 
     if (message.sysid == uasId)
     {

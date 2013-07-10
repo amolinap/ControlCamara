@@ -5,11 +5,11 @@
 
 #include "QGCMAVLink.h"
 #include "MAVLinkProtocol.h"
-#include "UASInterface.h"
+//#include "UASInterface.h"
 #include "LinkInterface.h"
 
 // INCLUDE ALL MAV/UAS CLASSES USING MAVLINK
-#include "UAS.h"
+//#include "UAS.h"
 #include "SlugsMAV.h"
 //#include "PxQuadMAV.h"
 //#include "ArduPilotMegaMAV.h"

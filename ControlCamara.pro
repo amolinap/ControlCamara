@@ -27,55 +27,41 @@ INCLUDEPATH += $$FLIGHT_SOURCE \
             $$BASEDIR/../../mavlink/include
 
 SOURCES += src/main.cpp \
-        src/mainwindow.cpp \
-        #src/ect/QGCLogPlayer.cpp \
+        src/mainwindow.cpp \        
         src/ect/MAVLinkProtocol.cc \
         src/ect/QGC.cc \
-        #src/ect/MAVLinkSimulationLink.cc \
         src/ect/LinkManager.cc \
-        #src/ect/MAVLinkSimulationMAV.cc \
-        #src/ect/MAVLinkSimulationWaypointPlanner.cc \
         src/ect/UASManager.cc \
-        #src/ect/UAS.cc \
         src/ect/SlugsMAV.cc \
         src/ect/QGCMAVLinkUASFactory.cc \
-        src/ect/SerialLink.cc \
         src/ect/qextserialport.cpp \
         src/ect/qextserialbase.cpp \
         src/ect/posix_qextserialport.cpp \
-        #src/ect/HUD.cc \
-        src/ect/UDPLink.cc \
-        src/QGCFlight.cpp
+        src/ect/UDPLink.cc
 
 HEADERS  += src/mainwindow.h  \
-        #src/ect/QGCLogPlayer.h \
         src/ect/MAVLinkProtocol.h \
         src/ect/ProtocolInterface.h \
         src/ect/LinkInterface.h \
         src/ect/QGCMAVLink.h \
         src/ect/QGC.h \
         src/ect/configuration.h \
-        #src/ect/MAVLinkSimulationLink.h \
         src/ect/LinkManager.h \
         src/ect/MG.h \
-        #src/ect/MAVLinkSimulationMAV.h \
-        #src/ect/MAVLinkSimulationWaypointPlanner.h \
         src/ect/UASManager.h \
-        #src/ect/UASInterface.h \
-        #src/ect/UAS.h \
         src/ect/SlugsMAV.h \
         src/ect/QGCMAVLinkUASFactory.h \
-        src/ect/SerialLink.h \
         src/ect/qextserialport.h \
         src/ect/qextserialbase.h \
-        src/ect/SerialLinkInterface.h \
         src/ect/posix_qextserialport.h \
-        #src/ect/HUD.h \
-        src/ect/UDPLink.h \
-        src/QGCFlight.h
+        src/ect/UDPLink.h
 
-FORMS    += src/mainwindow.ui  \
-        #src/ect/QGCLogPlayer.ui \
-    src/QGCFlight.ui
+FORMS    += src/mainwindow.ui
 
 unix:DEFINES           += _TTY_POSIX_
+
+QMAKE_POST_LINK += echo "Copying files"
+QMAKE_POST_LINK += && cp -f $$BASEDIR/images/style-mission.css $$TARGETDIR/ControlCamara.app/Contents/MacOS/style-indoor.css
+
+RESOURCES += \
+    resources.qrc
