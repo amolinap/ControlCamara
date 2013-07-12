@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mavlink = new MAVLinkProtocol();
     mavlink->setSystemId(127);
+    typeMessage = 0;
 
     connect(ui->cxHeartBeat, SIGNAL(toggled(bool)), mavlink, SLOT(enableHeartbeats(bool)));
 
@@ -26,9 +27,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect(UASManager::instance(), SIGNAL(UASCreated(SlugsMAV*)), this, SLOT(UASCreated(SlugsMAV*)));
     connect(UASManager::instance(), SIGNAL(activeUASSet(SlugsMAV*)), this, SLOT(setActiveUAS(SlugsMAV*)));
 
-    connect(ui->dlDireccion, SIGNAL(valueChanged(int)), ui->lbDireccion, SLOT(setNum(int)));
-    connect(ui->dlMovimiento, SIGNAL(valueChanged(int)), ui->lbMovimiento, SLOT(setNum(int)));
-    connect(ui->dlVelocidad, SIGNAL(valueChanged(int)), ui->lbVelocidad, SLOT(setNum(int)));
+    connect(ui->cbDireccion, SIGNAL(valueChanged(int)), ui->dlDireccion, SLOT(setValue(int)));
+    connect(ui->cbMovimiento, SIGNAL(valueChanged(int)), ui->dlMovimiento, SLOT(setValue(int)));
+    connect(ui->cbVelocidad, SIGNAL(valueChanged(int)), ui->dlVelocidad, SLOT(setValue(int)));
+
+    connect(ui->dlDireccion, SIGNAL(valueChanged(int)), this, SLOT(sendDireccion(int)));
+    connect(ui->dlMovimiento, SIGNAL(valueChanged(int)), this, SLOT(sendMovimiento(int)));
+    connect(ui->dlVelocidad, SIGNAL(valueChanged(int)), this, SLOT(sendVelocidad(int)));
+
+    connect(ui->btAplicar, SIGNAL(clicked()), this, SLOT(aplicarValores()));
 }
 
 MainWindow::~MainWindow()
@@ -66,10 +73,11 @@ void MainWindow::setActiveUAS(SlugsMAV *mav)
 {
     if (mav != NULL)
     {
-        //this->activeUAS = uas;
+        this->activeMav = mav;
 
-        connect(mav, SIGNAL(emitHeartBeat()), this, SLOT(setAlertHeartbeat()));
-        connect(mav, SIGNAL(emitHeartBeatTimeOut()), this, SLOT(setAlertHeartbeatTimeout()));
+        connect(this->activeMav, SIGNAL(emitHeartBeat()), this, SLOT(setAlertHeartbeat()));
+        connect(this->activeMav, SIGNAL(emitHeartBeatTimeOut()), this, SLOT(setAlertHeartbeatTimeout()));
+        connect(this->activeMav, SIGNAL(emitSendMessage(QString)), this, SLOT(sendMessageStatus(QString)));
     }
 }
 
@@ -100,10 +108,58 @@ void MainWindow::refreshTimeOut()
 {
     if(heartbeat == -1)
     {
-        ui->wgHeartBeat->setStyleSheet("background-color: #FF3333;");
+        ui->gbAlertas->setStyleSheet("background-color: #FF3333;");
     }
     else
     {
-        ui->wgHeartBeat->setStyleSheet("background-color: #66FF33;");
+        ui->gbAlertas->setStyleSheet("background-color: #66FF33;");
     }
+}
+
+void MainWindow::aplicarValores()
+{
+    sendMessage();
+}
+
+void MainWindow::sendDireccion(int value)
+{
+    ui->cbDireccion->setValue(value);
+
+    mlMotorMove.dir = ui->cbDireccion->value();
+
+    sendMessage();
+}
+
+void MainWindow::sendMovimiento(int value)
+{
+    ui->cbMovimiento->setValue(value);
+
+    mlMotorMove.amount = ui->cbMovimiento->value();
+
+    sendMessage();
+}
+
+void MainWindow::sendVelocidad(int value)
+{
+    ui->cbVelocidad->setValue(value);
+
+    mlMotorMove.speed = ui->cbVelocidad->value();
+
+    sendMessage();
+}
+
+void MainWindow::sendMessageStatus(QString status)
+{
+    ui->tbMessages->appendPlainText(status);
+}
+
+void MainWindow::sendMessage()
+{
+    mavlink_message_t msg;
+
+    mavlink_msg_move_motor_encode(MG::SYSTEM::ID, MG::SYSTEM::COMPID, &msg, &(mlMotorMove));
+
+    //this->activeMav->sendMessage(msg);
+
+    qDebug()<<"Direccion: "<<mlMotorMove.dir<<" Velocidad: "<<mlMotorMove.speed<<" Movimiento: "<<mlMotorMove.amount;
 }

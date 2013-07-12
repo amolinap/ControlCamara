@@ -149,18 +149,6 @@ QSpinBox {
 	border-radius: 5px;
 }
 
-QSpinBox::up-button {
-    subcontrol-origin: border;
-    subcontrol-position: top right; /* position at the top right corner */
-    border-image: url(:/images/actions/go-up.svg) 1;
-    border-width: 1px;
-}
-QSpinBox::down-button {
-    subcontrol-origin: border;
-    subcontrol-position: bottom right; /* position at the top right corner */
-    border-image: url(:/images/actions/go-down.svg) 1;
-    border-width: 1px;
-}
 
 QDoubleSpinBox {
 	/*min-height: 14px;
@@ -180,14 +168,14 @@ QDoubleSpinBox::up-button {
     subcontrol-position: top right; /* position at the top right corner */
     border-image: url(:/images/actions/go-up.svg) 1;
     border-width: 1px;
-    max-width: 5px;
+    max-width: 10px;
 }
 QDoubleSpinBox::down-button {
     subcontrol-origin: border;
     subcontrol-position: bottom right; /* position at the top right corner */
     border-image: url(:/images/actions/go-down.svg) 1;
     border-width: 1px;
-    max-width: 5px;
+    max-width: 10px;
 }
 
 QPushButton {
@@ -448,7 +436,7 @@ QLabel#lbMode, #lbModeNavigation, #lbStateNavigation {
 	background-color: rgb(85, 107, 47);
 }
 
-QDoubleSpinBox#sbHeight, #sbAirSpeed, #sbTurnRate {
+QSpinBox#cbVelocidad, #cbMovimiento, #cbDireccion {
     font-weight: bold;
 	font-size: 16px;
 	min-height: 20px;
@@ -472,7 +460,7 @@ QCheckBox#cxHeart {
 	border-radius: 10px;
 }
 
-QGroupBox#gbAlerts {
+QGroupBox#gbAlertas {
 	border-radius: 12px; 
 	padding: 0px 0px 0px 0px; 
 	margin-top: 1ex;
@@ -527,9 +515,23 @@ QPushButton#btRTB, #btRTBGS {
     max-height: 40px;
 }
 
-QPushButton#btExportJPG, #btExportKML, #btDraw {	
-	max-width: 120px;
+QPushButton#btVelocidad, #btMovimiento, #btDireccion, #btAplicar {	
+	min-width: 120px;
 }
+
+QSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right; /* position at the top right corner */
+    border-image: url(:/images/go-up.svg) 1;
+    border-width: 1px;
+}
+QSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right; /* position at the top right corner */
+    border-image: url(:/images/go-down.svg) 1;
+    border-width: 1px;
+}
+
 
 QLabel#lbTypeUAV {
     font-weight: bold;

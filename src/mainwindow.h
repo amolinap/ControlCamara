@@ -12,6 +12,8 @@
 //#include "QGCFlight.h"
 //#include "GoogleEarth/map3D/QGCGoogleEarthView.h"
 //#include "SerialLink.h"
+#include "mavlink.h"
+#include "MG.h"
 #include "UASManager.h"
 
 namespace Ui {
@@ -35,6 +37,12 @@ public slots:
     void setAlertHeartbeat();
     void setAlertHeartbeatTimeout();
     void refreshTimeOut();
+    void aplicarValores();
+    void sendMessageStatus(QString status);
+    void sendDireccion(int value);
+    void sendMovimiento(int value);
+    void sendVelocidad(int value);
+    void sendMessage();
 
 private:
     Ui::MainWindow *ui;
@@ -48,6 +56,12 @@ private:
     bool timeOut;
     int timeOutGPS;
     QTimer *timer;
+    int typeMessage;
+
+    SlugsMAV *activeMav;
+
+    mavlink_motor_position_t mlMotorPosition;
+    mavlink_move_motor_t mlMotorMove;
 
 signals:
     void emitKeyPress(QKeyEvent *event);

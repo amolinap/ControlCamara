@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>images/style-mission.css</file>
+        <file>images/go-up.svg</file>
+        <file>images/go-down.svg</file>
     </qresource>
 </RCC>
