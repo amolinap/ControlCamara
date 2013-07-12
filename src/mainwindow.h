@@ -43,6 +43,9 @@ public slots:
     void sendMovimiento(int value);
     void sendVelocidad(int value);
     void sendMessage();
+    void motorPosition(mavlink_motor_position_t motorPosition);
+    void limpiar();
+    void cerrar();
 
 private:
     Ui::MainWindow *ui;

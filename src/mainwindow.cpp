@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->dlVelocidad, SIGNAL(valueChanged(int)), this, SLOT(sendVelocidad(int)));
 
     connect(ui->btAplicar, SIGNAL(clicked()), this, SLOT(aplicarValores()));
+    connect(ui->btLimpiar, SIGNAL(clicked()), this, SLOT(limpiar()));
+    connect(ui->btCerrar, SIGNAL(clicked()), this, SLOT(cerrar()));
 }
 
 MainWindow::~MainWindow()
@@ -78,6 +80,7 @@ void MainWindow::setActiveUAS(SlugsMAV *mav)
         connect(this->activeMav, SIGNAL(emitHeartBeat()), this, SLOT(setAlertHeartbeat()));
         connect(this->activeMav, SIGNAL(emitHeartBeatTimeOut()), this, SLOT(setAlertHeartbeatTimeout()));
         connect(this->activeMav, SIGNAL(emitSendMessage(QString)), this, SLOT(sendMessageStatus(QString)));
+        connect(this->activeMav, SIGNAL(emitMotorPosition(mavlink_motor_position_t)), this, SLOT(motorPosition(mavlink_motor_position_t)));
     }
 }
 
@@ -118,7 +121,10 @@ void MainWindow::refreshTimeOut()
 
 void MainWindow::aplicarValores()
 {
-    sendMessage();
+    if(ui->cxManualmente->isChecked())
+    {
+        sendMessage();
+    }
 }
 
 void MainWindow::sendDireccion(int value)
@@ -127,7 +133,10 @@ void MainWindow::sendDireccion(int value)
 
     mlMotorMove.dir = ui->cbDireccion->value();
 
-    sendMessage();
+    if(!ui->cxManualmente->isChecked())
+    {
+        sendMessage();
+    }
 }
 
 void MainWindow::sendMovimiento(int value)
@@ -136,7 +145,10 @@ void MainWindow::sendMovimiento(int value)
 
     mlMotorMove.amount = ui->cbMovimiento->value();
 
-    sendMessage();
+    if(!ui->cxManualmente->isChecked())
+    {
+        sendMessage();
+    }
 }
 
 void MainWindow::sendVelocidad(int value)
@@ -145,7 +157,10 @@ void MainWindow::sendVelocidad(int value)
 
     mlMotorMove.speed = ui->cbVelocidad->value();
 
-    sendMessage();
+    if(!ui->cxManualmente->isChecked())
+    {
+        sendMessage();
+    }
 }
 
 void MainWindow::sendMessageStatus(QString status)
@@ -162,4 +177,21 @@ void MainWindow::sendMessage()
     //this->activeMav->sendMessage(msg);
 
     qDebug()<<"Direccion: "<<mlMotorMove.dir<<" Velocidad: "<<mlMotorMove.speed<<" Movimiento: "<<mlMotorMove.amount;
+}
+
+void MainWindow::motorPosition(mavlink_motor_position_t motorPosition)
+{
+    ui->tbPosicion->setText(QString::number(motorPosition.pos));
+    ui->tbVelocidad->setText(QString::number(motorPosition.speed));
+    ui->tbMovimiento->setText(QString::number(motorPosition.amount));
+}
+
+void MainWindow::limpiar()
+{
+    ui->tbMessages->clear();
+}
+
+void MainWindow::cerrar()
+{
+    close();
 }
